@@ -1,18 +1,21 @@
-import { useRef } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+// import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import type { FieldValues } from "react-hook-form";
+import { AddUserSchema, TAddUserSchema } from "../lib/types";
 
-export const UserForm = () => {
-  const AddUserForm = useRef<HTMLFormElement>(null);
+const UserFormWithZod = () => {
+  // const AddUserForm = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     // getValues,
-  } = useForm();
+  } = useForm<TAddUserSchema>({
+    resolver: zodResolver(AddUserSchema),
+  });
 
-  async function onSubmit(data: FieldValues) {
+  async function onSubmit(data: TAddUserSchema) {
     console.log(data);
     reset();
   }
@@ -33,13 +36,12 @@ export const UserForm = () => {
           id="form"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
-          ref={AddUserForm}
           className="flex flex-col justify-center items-center"
         >
           <div className="md:w-[23rem]">
             <div className="relative z-0 w-full mb-1">
               <input
-                {...register("id", { required: "ID is required" })}
+                {...register("id")}
                 type="text"
                 name="id"
                 placeholder="98fa79-k8h1-252u-0252-r5817936858"
@@ -57,9 +59,7 @@ export const UserForm = () => {
             </div>
             <div className="relative z-0 w-full mb-1 mt-6">
               <input
-                {...register("firstname", {
-                  required: "First Name is required",
-                })}
+                {...register("firstname")}
                 type="text"
                 name="firstname"
                 placeholder="Enter First Name"
@@ -77,9 +77,7 @@ export const UserForm = () => {
             </div>
             <div className="relative z-0 w-full mt-6 mb-1">
               <input
-                {...register("middlename", {
-                  required: "Middle Name is required",
-                })}
+                {...register("middlename")}
                 type="text"
                 name="middlename"
                 placeholder="Enter MIddle Name"
@@ -97,7 +95,7 @@ export const UserForm = () => {
             </div>
             <div className="relative mt-6 -top-2  z-0 w-full mb-1">
               <input
-                {...register("phone", { required: "Phone Number is required" })}
+                {...register("phone")}
                 type="number"
                 name="phone"
                 placeholder="Enter Phone Number"
@@ -115,7 +113,7 @@ export const UserForm = () => {
             </div>
             <div className="relative mt-6 mb-1 -top-2 z-0 w-[23rem]">
               <select
-                {...register("role", { required: "Role is required" })}
+                {...register("role")}
                 name="role"
                 className="block appearance-none w-full border-2 border-basecolor hover:border-gray-500 px-4 py-2 pr-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
@@ -156,7 +154,7 @@ export const UserForm = () => {
             </div>
             <div className="relative z-0 w-full mt-3 mb-1">
               <input
-                {...register("lastname", { required: "Last Name is required" })}
+                {...register("lastname")}
                 type="text"
                 name="lastname"
                 placeholder="Enter Last Name"
@@ -174,7 +172,7 @@ export const UserForm = () => {
             </div>
             <div className="relative z-0 w-full mt-6 mb-1">
               <input
-                {...register("email", { required: "Email is required" })}
+                {...register("email")}
                 type="email"
                 name="email"
                 placeholder="Enter Email"
@@ -192,7 +190,7 @@ export const UserForm = () => {
             </div>
             <div className="relative mt-6 -top-2 z-0 w-full mb-1">
               <input
-                {...register("branchId", { required: "Branch ID is required" })}
+                {...register("branchId")}
                 type="text"
                 name="branchId"
                 placeholder="Enter Branch ID"
@@ -210,13 +208,7 @@ export const UserForm = () => {
             </div>
             <div className="relative mt-6 -top-2 z-0 w-full mb-1">
               <input
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 5,
-                    message: "Password must be at least 5 characters long",
-                  },
-                })}
+                {...register("password")}
                 type="password"
                 name="password"
                 placeholder="Enter Password"
@@ -243,3 +235,5 @@ export const UserForm = () => {
     </>
   );
 };
+
+export default UserFormWithZod;
